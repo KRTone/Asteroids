@@ -6,20 +6,16 @@ public class Shooting : MonoBehaviour
 {
     public GameObject gun;
     public GameObject bulletPrefab;
-    public float bulletForce = 20f;
-
-    private Animator gunExplosionAnimator;
-
-    private void Awake()
-    {
-        gunExplosionAnimator = gun.GetComponent<Animator>();
-    }
+    public GameObject gunExplosionEffect;
+    public float gunExplosionEffectDuration = 0.1f;
+    public float bulletForce = 10f;
 
     void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            gunExplosionAnimator.SetTrigger("FireTrigger");
+            GameObject effect = Instantiate(gunExplosionEffect, gun.transform.position, gun.transform.rotation, transform);
+            Destroy(effect, gunExplosionEffectDuration);
             Shoot();
         }
     }

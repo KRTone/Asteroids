@@ -10,11 +10,9 @@ public class Player : MonoBehaviour
 
     public Rigidbody2D rb;
     public Camera cam;
-    public GameObject firePoint;
 
     Vector2 playerPos;
     Vector2 mousePos;
-    Animator fireAnimation;
 
     IMoveController moveController;
 
