@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 
     public Rigidbody2D rb;
     public Camera cam;
+    public GameObject boomEffect;
+    public float boomDuration = 0.3f;
 
     Vector2 playerPos;
     Vector2 mousePos;
@@ -29,5 +31,10 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         moveController.Move(rb, playerPos, mousePos, moveSpeed);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        BoomController.BoomAndDestroy(this, boomEffect, boomDuration);
     }
 }
