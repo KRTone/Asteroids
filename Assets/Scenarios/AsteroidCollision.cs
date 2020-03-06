@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scenarios.Controllers;
-using UnityEditor;
+﻿using System;
+using Assets.Scenarios.Interfaces;
 using UnityEngine;
+using Zenject;
 
 public class AsteroidCollision : MonoBehaviour
 {
@@ -14,13 +13,21 @@ public class AsteroidCollision : MonoBehaviour
     public float multiplyVelocity = 1.5f;
     public float boomDuration = 0.3f;
 
+    IBoomController boomController;
+
+    [Inject]
+    public void Construct(IBoomController boomController)
+    {
+        this.boomController = boomController ?? throw new ArgumentNullException(nameof(boomController));
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         switch (collision.gameObject.tag)
         {
             case "Bullet":
                 SplitAsteroid(gameObject, collision.relativeVelocity);
-                BoomController.BoomAndDestroy(this, boomEffect, boomDuration);
+                boomController.BoomAndDestroy(this, boomEffect, boomDuration);
                 break;
             case "Asteroid":
             case "Player":
@@ -33,7 +40,7 @@ public class AsteroidCollision : MonoBehaviour
 
     void CreatePart(GameObject part, float x, float y)
     {
-        if(part != null)
+        if (part != null)
         {
             Vector2 center = new Vector2(x, y);
             GameObject gObj = Instantiate(part, center, Quaternion.identity);

@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using Assets.Scenarios.Controllers;
 using Assets.Scenarios.Interfaces;
 using UnityEngine;
+using Zenject;
 
 public class Player : MonoBehaviour
 {
@@ -17,10 +17,13 @@ public class Player : MonoBehaviour
     Vector2 mousePos;
 
     IMoveController moveController;
+    IBoomController boomController;
 
-    private void Start()
+    [Inject]
+    public void Construct(IMoveController moveController, IBoomController boomController)
     {
-        moveController = new MainMoveController();
+        this.moveController = moveController ?? throw new ArgumentNullException(nameof(moveController));
+        this.boomController = boomController ?? throw new ArgumentNullException(nameof(boomController));
     }
 
     void Update()
@@ -35,6 +38,6 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        BoomController.BoomAndDestroy(this, boomEffect, boomDuration);
+        boomController.BoomAndDestroy(this, boomEffect, boomDuration);
     }
 }

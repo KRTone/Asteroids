@@ -25,15 +25,18 @@ public class AsteroidSpawner : MonoBehaviour
         { Left, LeftInt }
     };
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        nextSpawn = Time.time;
-
         sides.Add(sidesConsts[Top], transform.Find(Top));
         sides.Add(sidesConsts[Left], transform.Find(Left));
         sides.Add(sidesConsts[Right], transform.Find(Right));
         sides.Add(sidesConsts[Bottom], transform.Find(Bottom));
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        nextSpawn = Time.time;
     }
 
     // Update is called once per frame
